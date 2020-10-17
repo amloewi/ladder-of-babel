@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './App.css';
 import { cedict } from "./small.js";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // This was necessary; ugh
@@ -43,7 +44,7 @@ class Translation extends React.Component {
                   translation.push({"token": best_candidate, "pinyin": pinyin, "definition": definition})
                 } else {
                     const token = remaining_characters[0]
-                    const definition = token in punctuation ? "" : "??"
+                    // const definition = token in punctuation ? "" : "??"
                     translation.push({"token": token, "pinyin": "", "definition": ""})
                 }
                 if (word_boundary > 1) {
