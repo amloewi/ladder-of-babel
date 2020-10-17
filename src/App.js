@@ -24,7 +24,7 @@ class Translation extends React.Component {
 
   translate(text) { 
     // This is super sloppy for all sorts of reasons; do need the chinese punctuation though
-    const punctuation = ["，", "。", "「", "」", "、", "‧", ".", ";", " ", "\t"]
+    // const punctuation = ["，", "。", "「", "」", "、", "‧", ".", ";", " ", "\t"]
 
     const translation = []
     let remaining_characters = text
