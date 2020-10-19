@@ -90,6 +90,7 @@ class Translation extends React.Component {
             onChange={ this.handleInputChange }
             value={ this.state.text }
         />
+        {/* Nothing here */}
         &nbsp;&nbsp;<b>Click on a word if you already know it, to hide the definition</b>
         <p></p>
         {this.state.translation.map((word, ix) =>
