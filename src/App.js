@@ -8,18 +8,20 @@ import { Container, Row, Col, Navbar, Button, Nav, Modal } from 'react-bootstrap
 class Translation extends React.Component {
   constructor(props) {
     super(props);
+    const translation = [{"token":"在", "pinyin":"[zai4]", "definition": "/(located) at/(to be) in/to exist/in the middle of doing sth/(indicating an action in progress)/"},
+    {"token":"此", "pinyin":"[ci3]", "definition": "/this/these/"},
+    {"token":"粘贴", "pinyin":"[zhan1 tie1]", "definition":"/to stick/to affix/to adhere/to paste (as in 'copy and paste')/Taiwan pr. [nian2 tie1]/also written 黏貼|黏贴[nian2 tie1]/"},
+    {"token":"你", "pinyin":"[ni3]", "definition": "/you (informal, as opposed to courteous 您[nin2])/"},
+    {"token":"自己", "pinyin":"[zi4 ji3]", "definition": "/oneself/one's own/"},
+    {"token":"的", "pinyin":"[de5]", "definition": "/of/~'s (possessive particle)/(used after an attribute)/(used to form a nominal expression)/(used at the end of a declarative sentence for emphasis)/"},
+    {"token":"内容", "pinyin":"[nei4 rong2]", "definition": "/content/substance/details/CL:個|个[ge4],項|项[xiang4]/"},
+    {"token":"!", "pinyin":"", "definition": ""}
+  ]
     this.state = {
-      translation: [{"token":"在", "pinyin":"[zai4]", "definition": "/(located) at/(to be) in/to exist/in the middle of doing sth/(indicating an action in progress)/"},
-      {"token":"此", "pinyin":"[ci3]", "definition": "/this/these/"},
-      {"token":"粘贴", "pinyin":"[zhan1 tie1]", "definition":"/to stick/to affix/to adhere/to paste (as in 'copy and paste')/Taiwan pr. [nian2 tie1]/also written 黏貼|黏贴[nian2 tie1]/"},
-      {"token":"你", "pinyin":"[ni3]", "definition": "/you (informal, as opposed to courteous 您[nin2])/"},
-      {"token":"自己", "pinyin":"[zi4 ji3]", "definition": "/oneself/one's own/"},
-      {"token":"的", "pinyin":"[de5]", "definition": "/of/~'s (possessive particle)/(used after an attribute)/(used to form a nominal expression)/(used at the end of a declarative sentence for emphasis)/"},
-      {"token":"内容", "pinyin":"[nei4 rong2]", "definition": "/content/substance/details/CL:個|个[ge4],項|项[xiang4]/"},
-      {"token":"!", "pinyin":"", "definition": ""}
-    ],
+      translation: translation,
       text: "在此粘贴你自己的内容!",
-      total: 0
+      known: 0,
+      unknown: translation.length
     };
     // Would prefer the less insane syntax for this
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -40,11 +42,12 @@ class Translation extends React.Component {
         return word
       }
     }) 
-    const total = updated.map(word => word["show"]==="hidden").reduce((a, b) => a + b)
+    const known = updated.map(word => word["show"]==="hidden").reduce((a, b) => a + b)
 
     this.setState({
       translation: updated,
-      total: total
+      known: known,
+      unknown: updated.length - known
     })
   }
 
@@ -84,14 +87,16 @@ class Translation extends React.Component {
   render() {
     return(
       <Container>
-        <b>Paste the text you want to read in here: </b>&nbsp;&nbsp;
-        <input
-            type="text"
-            onChange={ this.handleInputChange }
-            value={ this.state.text }
-        />
-        {/* Nothing here */}
-        &nbsp;&nbsp;<b>Click on a word if you already know it, to hide the definition</b>
+        <div className="bookend">
+          Paste the text you want to read in here:&nbsp;&nbsp;
+          <input
+              type="text"
+              onChange={ this.handleInputChange }
+              value={ this.state.text }
+          />
+          {/* Nothing here */}
+          &nbsp;&nbsp;Click on a word if you already know it, to hide the definition
+        </div>
         <p></p>
         {this.state.translation.map((word, ix) =>
           <Row key={ix} style={{textAlign: "left"}} onClick={() => this.toggle(ix)}>
@@ -100,9 +105,8 @@ class Translation extends React.Component {
             <Col md={9} className={word["show"]}>{word["definition"]}</Col>
           </Row>
         )}
-        <div>          
-          <b>You knew {this.state.total} of these words!</b>
-          <p></p>
+        <div className="bookend">          
+          You knew {this.state.known} of these words, and saw {this.state.unknown} new ones!
         </div>
       </Container>
     ) 
@@ -150,11 +154,11 @@ function About() {
 function App() {
   return (
     <div className="App">
-      <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Ladder of Babel</Navbar.Brand>
+      <Navbar bg="dark" className="nav-styling" expand="lg">
+        <Navbar.Brand href="#home" style={{color:'white'}}>Ladder of Babel</Navbar.Brand>
         <Nav className="mr-auto"></Nav> {/* Using this to push the rest to the right */}
         <About />
-        <Nav.Link href="http://dovecoteinstitute.org">Dovecote Institute</Nav.Link>
+        <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white'}}>Dovecote Institute</Nav.Link>
       </Navbar>
 
       <p></p>

@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  font-family: Helvetica;
+  font-family: Helvetica;  
 }
 
 .App-logo {
@@ -39,3 +39,27 @@
 }
 
 .hidden { display:none; }
+
+.nav-styling {
+  background-color: goldenrod; 
+  /* cornflowerblue */
+  /* color: white; */
+  font-family: 'Copperplate';
+
+  /* background-image: url("images/header.png"); */
+  /* Verdana=simple, Monaco=8bit, Helvetica Neue=fine, Didot ~= Crate+Barrel, Copperplate? */
+}
+
+.bookend {
+  padding-top:10px;
+  padding-bottom:10px;
+  font-family: 'Copperplate';
+  background-color: lightgray;
+  /* color:white; */
+  border-radius: 5px;
+}
+
+
+.brand {
+  color: white;
+}
