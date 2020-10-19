@@ -18,7 +18,8 @@ class Translation extends React.Component {
       {"token":"内容", "pinyin":"[nei4 rong2]", "definition": "/content/substance/details/CL:個|个[ge4],項|项[xiang4]/"},
       {"token":"!", "pinyin":"", "definition": ""}
     ],
-      text: "在此粘贴你自己的内容!"
+      text: "在此粘贴你自己的内容!",
+      total: 0
     };
     // Would prefer the less insane syntax for this
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -28,7 +29,22 @@ class Translation extends React.Component {
     this.setState({
       text: event.target.value,
       translation: this.translate(event.target.value),
-      show: this.translation.map (() => true) // OR have it be a property of the word, probably; but, onclick?
+    })
+  }
+
+  toggle(ix) {
+    const updated = this.state.translation.map((word, j) => {
+      if (ix==j) {
+        return {...word, show: word.show == "hidden" ? "" : "hidden"}
+      } else {
+        return word
+      }
+    }) 
+    const total = updated.map(word => word["show"]=="hidden").reduce((a, b) => a + b)
+
+    this.setState({
+      translation: updated,
+      total: total
     })
   }
 
@@ -68,21 +84,25 @@ class Translation extends React.Component {
   render() {
     return(
       <Container>
+        <b>Paste the text you want to read in here: </b>&nbsp;&nbsp;
         <input
             type="text"
             onChange={ this.handleInputChange }
             value={ this.state.text }
         />
+        &nbsp;&nbsp;<b>Click on a word if you already know it, to hide the definition</b>
         <p></p>
-        {/* I should presumably make this into a component with the behavior I want */}
-        {/* <Word word={word} key={ix} /> */}
         {this.state.translation.map((word, ix) =>
-          <Row key={ix} style={{textAlign: "left"}}>
-            <Col md={2}>{word["token"]}</Col>
-            <Col md={2}>{word["pinyin"]}</Col>
-            <Col md={8}>{word["definition"]}</Col>
+          <Row key={ix} style={{textAlign: "left"}} onClick={() => this.toggle(ix)}>
+            <Col md={1}>{word["token"]}</Col>
+            <Col md={2} className={word["show"]}>{word["pinyin"]}</Col>
+            <Col md={9} className={word["show"]}>{word["definition"]}</Col>
           </Row>
         )}
+        <div>          
+          <b>You knew {this.state.total} of these words!</b>
+          <p></p>
+        </div>
       </Container>
     ) 
   }
@@ -107,12 +127,12 @@ function About() {
         <Modal.Body>
           Ladder of Babel is a tool for beginner and intermediate students of Chinese that makes any (simplified) text accessible by solving a 
           serious problem with most current tools.<p></p>
-          Tools such as the Google Translate browser plugin, or the similar Mate Translate, are perfect for translating a single word at a time. They are 
-          clearly an enormous improvement over having to search through a paper dictionary. However, they are still best for people who only need to pick out
+          Tools such as the Google Translate browser plugin, or the similar Mate Translate, are great for translating a single word at a time. They are 
+          clearly an enormous improvement over having to search through a paper dictionary. However, they are still designed for people who only need to pick out
           words one by one, whereas
-          most Chinese language learners both need to translate <b>most</b> of the words - and, probably don't even know which characters 
+          most Chinese language learners both need to translate <b>most</b> of the words - and, probably don't even know which combinations of characters 
            <b> form</b> a single word.<p></p>
-           Ladder of Babel solves both of these problems by pre-identifying which characters form words, and giving definitions for everything, at once - 
+           Ladder of Babel solves both of these problems by pre-identifying which characters go together, and giving definitions for everything, at once - 
            making the reading experience as seamless and fluent as possible even for early stage students, and opening up the entire world of online Chinese
            text for easy access, and also productive study.
         </Modal.Body>
@@ -139,7 +159,7 @@ function App() {
       <p></p>
       <Translation />
       <hr></hr>
-      <footer class="container">
+      <footer className="container">
         <p>&copy; Dovecote Institute 2020</p>
       </footer>
     </div>
