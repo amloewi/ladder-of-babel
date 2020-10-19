@@ -34,13 +34,13 @@ class Translation extends React.Component {
 
   toggle(ix) {
     const updated = this.state.translation.map((word, j) => {
-      if (ix==j) {
-        return {...word, show: word.show == "hidden" ? "" : "hidden"}
+      if (ix===j) {
+        return {...word, show: word.show === "hidden" ? "" : "hidden"}
       } else {
         return word
       }
     }) 
-    const total = updated.map(word => word["show"]=="hidden").reduce((a, b) => a + b)
+    const total = updated.map(word => word["show"]==="hidden").reduce((a, b) => a + b)
 
     this.setState({
       translation: updated,
