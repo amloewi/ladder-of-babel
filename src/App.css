@@ -44,7 +44,7 @@
   background-color: goldenrod; 
   /* cornflowerblue */
   /* color: white; */
-  font-family: 'Copperplate';
+  font-family: 'Helvetica Neue';
 
   /* background-image: url("images/header.png"); */
   /* Verdana=simple, Monaco=8bit, Helvetica Neue=fine, Didot ~= Crate+Barrel, Copperplate? */
@@ -53,8 +53,9 @@
 .bookend {
   padding-top:10px;
   padding-bottom:10px;
-  font-family: 'Copperplate';
-  background-color: lightgray;
+  font-family: 'Helvetica Neue';
+  /* font-size: 25px; */
+  background-color: #DCDCDC;
   /* color:white; */
   border-radius: 5px;
 }
@@ -62,4 +63,8 @@
 
 .brand {
   color: white;
+}
+
+.thick {
+  border-top: 3px solid;
 }

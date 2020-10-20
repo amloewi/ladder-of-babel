@@ -164,7 +164,7 @@ function App() {
       <p></p>
       <Translation />
       <hr></hr>
-      <footer className="container">
+      <footer style={{textAlign: "left"}} className="container">
         <p>&copy; Dovecote Institute 2020</p>
       </footer>
     </div>
