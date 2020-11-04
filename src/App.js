@@ -90,9 +90,9 @@ class Translation extends React.Component {
           
         <Row>
           <Col md={{span:3, offset:9}} className="fixed-top">
-            <Button variant="secondary">Click to hide familiar words</Button>
-            <br></br><br></br>
-            <h5>You knew {this.state.known} words,</h5>
+            <Button variant="dark">Click to hide familiar words</Button>
+            <br></br>
+            <h5 style={{paddingTop:10+"px"}}>You knew {this.state.known} words,</h5>
             <h5>and saw {this.state.unknown} new ones!</h5>
           </Col>
         </Row>
