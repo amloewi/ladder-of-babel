@@ -98,7 +98,7 @@ class Translation extends React.Component {
         </Row>
 
         <Row>
-          <Col md={11} className="textinput">
+          <Col md={10} className="textinput">
             <InputGroup>
               <InputGroup.Prepend>
                 <InputGroup.Text>
