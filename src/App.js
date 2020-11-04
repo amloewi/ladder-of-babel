@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { cedict } from "./medium.js"; // do one for medium w ... 50k
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // This was necessary; ugh
-import { Container, Row, Col, Navbar, Button, Nav, Modal } from 'react-bootstrap';
+import { Container, Row, Col, Navbar, Button, Nav, Modal, InputGroup, FormControl } from 'react-bootstrap';
 
 
 class Translation extends React.Component {
@@ -87,27 +87,37 @@ class Translation extends React.Component {
   render() {
     return(
       <Container>
-        <div className="bookend">
-          Paste the text you want to read in here:&nbsp;&nbsp;
-          <input
-              type="text"
-              onChange={ this.handleInputChange }
-              value={ this.state.text }
-          />
-          {/* Nothing here */}
-          &nbsp;&nbsp;Click on a word if you already know it, to hide the definition
-        </div>
-        <p></p>
+          
+        <Row>
+          <Col md={{span:3, offset:9}} className="fixed-top">
+            <Button variant="secondary">Click to hide familiar words</Button>
+            <br></br><br></br>
+            <h5>You knew {this.state.known} words,</h5>
+            <h5>and saw {this.state.unknown} new ones!</h5>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={11} className="textinput">
+            <InputGroup>
+              <InputGroup.Prepend>
+                <InputGroup.Text>
+                  Paste Chinese Here            
+                </InputGroup.Text>
+              </InputGroup.Prepend>
+              <FormControl onChange={ this.handleInputChange } value={ this.state.text }/>
+            </InputGroup>
+            &nbsp;&nbsp;
+          </Col>
+        </Row>
+
         {this.state.translation.map((word, ix) =>
           <Row key={ix} style={{textAlign: "left"}} onClick={() => this.toggle(ix)}>
             <Col md={1}>{word["token"]}</Col>
             <Col md={2} className={word["show"]}>{word["pinyin"]}</Col>
-            <Col md={9} className={word["show"]}>{word["definition"]}</Col>
+            <Col md={8} className={word["show"]}>{word["definition"]}</Col>
           </Row>
         )}
-        <div className="bookend">          
-          You knew {this.state.known} of these words, and saw {this.state.unknown} new ones!
-        </div>
       </Container>
     ) 
   }
@@ -131,15 +141,16 @@ function About() {
         </Modal.Header>
         <Modal.Body>
           Ladder of Babel is a tool for beginner and intermediate students of Chinese that makes any (simplified) text accessible by solving a 
-          serious problem with most current tools.<p></p>
+          basic problem with most current tools.<p></p>
           Tools such as the Google Translate browser plugin, or the similar Mate Translate, are great for translating a single word at a time. They are 
-          clearly an enormous improvement over having to search through a paper dictionary. However, they are still designed for people who only need to pick out
+           an enormous improvement over having to search through a paper dictionary. However, they are still designed for people who only need to look up
           words one by one, whereas
-          most Chinese language learners both need to translate <b>most</b> of the words - and, probably don't even know which combinations of characters 
+          most Chinese language learners both need to translate <b>most</b> of the words - and, likely don't even know which combinations of characters 
            <b> form</b> a single word.<p></p>
-           Ladder of Babel solves both of these problems by pre-identifying which characters go together, and giving definitions for everything, at once - 
-           making the reading experience as seamless and fluent as possible even for early stage students, and opening up the entire world of online Chinese
-           text for easy access, and also productive study.
+           Ladder of Babel solves both of these problems by pre-identifying which characters go together, and giving definitions for everything, at once -- 
+           further allowing each user to customize and focus their learning, by hiding any information they don't need. 
+           This makes the reading experience as seamless and fluent as possible even for early stage students, and opens up the entire world of online Chinese
+           text for easy access, and productive study.
         </Modal.Body>
         <Modal.Footer>
           <Button variant="primary" onClick={handleClose}>
@@ -154,11 +165,11 @@ function About() {
 function App() {
   return (
     <div className="App">
-      <Navbar bg="dark" className="nav-styling" expand="lg">
-        <Navbar.Brand href="#home" style={{color:'white'}}>Ladder of Babel</Navbar.Brand>
+      <Navbar bg="dark" className="" expand="lg">
+      <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white', fontsize:24+'pt'}}>Dovecote Institute</Nav.Link>      
         <Nav className="mr-auto"></Nav> {/* Using this to push the rest to the right */}
-        <About />
-        <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white'}}>Dovecote Institute</Nav.Link>
+        <About />        
+        <Navbar.Brand href="#home" style={{color:'white', paddingLeft:20+'px'}}>The Design Philosophy of Ladder of Babel</Navbar.Brand>        
       </Navbar>
 
       <p></p>

@@ -40,14 +40,12 @@
 
 .hidden { display:none; }
 
-.nav-styling {
-  background-color: goldenrod; 
-  /* cornflowerblue */
-  /* color: white; */
+.navbar,
+.navbar-default,
+.navbar-header {
+  /* background-color: goldenrod !important; */
   font-family: 'Helvetica Neue';
-
-  /* background-image: url("images/header.png"); */
-  /* Verdana=simple, Monaco=8bit, Helvetica Neue=fine, Didot ~= Crate+Barrel, Copperplate? */
+  z-index: 100 !important;
 }
 
 .bookend {
@@ -58,6 +56,8 @@
   background-color: #DCDCDC;
   /* color:white; */
   border-radius: 5px;
+  position: fixed; /* COULD BE THE SOLUTION !!! */
+  z-index: 100;
 }
 
 
@@ -67,4 +67,23 @@
 
 .thick {
   border-top: 3px solid;
+}
+
+/* .textinput {
+
+  z-index: 100;
+}
+
+.learned {
+  text-align: right;
+  
+  padding-top: 70px;
+  position:fixed;
+  background: white;
+} */
+
+.fixed-top {
+  padding-top: 70px;
+  text-align: right;
+  z-index: -1;
 }
