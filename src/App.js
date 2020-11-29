@@ -28,11 +28,75 @@ class Translation extends React.Component {
   }
 
   handleInputChange(event) {
+    // axios.get("http://127.0.0.1:5000/{user_id}/{language}).then(
+    //  result => {
+    //    const vocabulary = result.data // what?  
+    // }
+    // )
+    // const translation = this.translate(event.target.value)
+    // translation = translation.map((word, j) => {
+    //   if (word.word in vocabulary) {
+    //     return {...word, show: "hidden"}
+    //   } else {
+    //     return {...word, show: ""}
+    //   }
+    // })
+
     this.setState({
       text: event.target.value,
-      translation: this.translate(event.target.value),
+      translation: this.translate(event.target.value), // translation
     })
   }
+
+
+  // import axios from 'axios';
+
+  // export default class MyComponent extends Component {
+  //   state = {
+  //     error: null,
+  //     isLoaded: false,
+  //     items: []
+  //   };
+
+  //   componentDidMount() {
+  //     axios.get("https://jsonplaceholder.typicode.com/users").then(
+  //       result => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           items: result.data // this will be ... 
+  //         });
+  //       },
+  //       // Note: it's important to handle errors here
+  //       // instead of a catch() block so that we don't swallow
+  //       // exceptions from actual bugs in components.
+  //       error => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           error
+  //         });
+  //       }
+  //       );
+  //   }
+
+  //   render() {
+  //     const { error, isLoaded, items } = this.state;
+  //     if (error) {
+  //       return <div>Error: {error.message}</div>;
+  //     } else if (!isLoaded) {
+  //       return <div>Loading...</div>;
+  //     } else {
+  //       return (
+  //         <ul>
+  //           {items.map(item => (
+  //             <li key={item.username}>
+  //               {item.username}: {item.name}
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       );
+  //     }
+  //   }
+  // }
 
   toggle(ix) {
     const updated = this.state.translation.map((word, j) => {
@@ -41,7 +105,13 @@ class Translation extends React.Component {
       } else {
         return word
       }
-    }) 
+    })
+    
+    // and also post to the api to toggle in the database
+    // Fuck though -- how does it KNOW the user_id and language? Fuck.
+    // THAT MAY BE THE ONLY REMAINING PROBLEM THOUGH. 
+    // axios.post("http://127.0.0.1:5000/{user_id}/{language}/{word}); // ANYTHING ELSE?
+
     const known = updated.map(word => word["show"]==="hidden").reduce((a, b) => a + b)
 
     this.setState({
