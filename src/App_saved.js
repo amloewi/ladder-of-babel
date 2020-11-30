@@ -1,94 +1,102 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { cedict } from "./medium.js"; // do one for medium w ... 50k
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // This was necessary; ugh
 import { Container, Row, Col, Navbar, Button, Nav, Modal, InputGroup, FormControl } from 'react-bootstrap';
-import axios from 'axios';
-import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 
-// dev-lstkwpc9.us.auth0.com # DOMAIN
-// AK5e52F3h6Goesct1Q9ADvHuPchBW25U # CLIENT ID
 
 class Translation extends React.Component {
   constructor(props) {
     super(props);
-    const translation = [
-    {"word":"在", "pinyin":"[zai4]", "definition": "/(located) at/(to be) in/to exist/in the middle of doing sth/(indicating an action in progress)/"},
-    {"word":"此", "pinyin":"[ci3]", "definition": "/this/these/"},
-    {"word":"粘贴", "pinyin":"[zhan1 tie1]", "definition":"/to stick/to affix/to adhere/to paste (as in 'copy and paste')/Taiwan pr. [nian2 tie1]/also written 黏貼|黏贴[nian2 tie1]/"},
-    {"word":"你", "pinyin":"[ni3]", "definition": "/you (informal, as opposed to courteous 您[nin2])/"},
-    {"word":"自己", "pinyin":"[zi4 ji3]", "definition": "/oneself/one's own/"},
-    {"word":"的", "pinyin":"[de5]", "definition": "/of/~'s (possessive particle)/(used after an attribute)/(used to form a nominal expression)/(used at the end of a declarative sentence for emphasis)/"},
-    {"word":"内容", "pinyin":"[nei4 rong2]", "definition": "/content/substance/details/CL:個|个[ge4],項|项[xiang4]/"},
-    {"word":"!", "pinyin":"", "definition": ""}
+    const translation = [{"token":"在", "pinyin":"[zai4]", "definition": "/(located) at/(to be) in/to exist/in the middle of doing sth/(indicating an action in progress)/"},
+    {"token":"此", "pinyin":"[ci3]", "definition": "/this/these/"},
+    {"token":"粘贴", "pinyin":"[zhan1 tie1]", "definition":"/to stick/to affix/to adhere/to paste (as in 'copy and paste')/Taiwan pr. [nian2 tie1]/also written 黏貼|黏贴[nian2 tie1]/"},
+    {"token":"你", "pinyin":"[ni3]", "definition": "/you (informal, as opposed to courteous 您[nin2])/"},
+    {"token":"自己", "pinyin":"[zi4 ji3]", "definition": "/oneself/one's own/"},
+    {"token":"的", "pinyin":"[de5]", "definition": "/of/~'s (possessive particle)/(used after an attribute)/(used to form a nominal expression)/(used at the end of a declarative sentence for emphasis)/"},
+    {"token":"内容", "pinyin":"[nei4 rong2]", "definition": "/content/substance/details/CL:個|个[ge4],項|项[xiang4]/"},
+    {"token":"!", "pinyin":"", "definition": ""}
   ]
-
-    // IS IT BECAUSE THE MEANING OF 'this' IS CHANGING INSIDE OF THE CALL???
-    // Well don't know, but putting this outside (as the default)
-    // and only conditionally doing the authenticated version worked.
     this.state = {
       translation: translation,
       text: "在此粘贴你自己的内容!",
       known: 0,
-      unknown: translation.length,
-      vocabulary: [],
+      unknown: translation.length
     };
-
-    if (this.props.authenticated) {
-      // console.log("Set state YES authenticated")
-      axios.get("http://127.0.0.1:5000/" + this.props.user + "/mandarin").then(
-        result => {
-          // console.log("result.data:", result.data)
-          const updated = translation.map((word) => {
-            if (result.data.includes(word)) {
-              return {...word, show: "hidden"}
-            } else {
-              return word
-            }
-          })
-          this.state = {
-            translation: updated, 
-            text: "在此粘贴你自己的内容!",
-            vocabulary: result.data,
-            known: result.data.length,
-            unknown: updated.map(word => word["show"]!=="hidden").reduce((a, b) => a + b)
-          };
-        }
-      )
-    }
     // Would prefer the less insane syntax for this
     this.handleInputChange = this.handleInputChange.bind(this)
-    // Why again do I need to declare this, and not 'toggle'? B/c event?
   }
 
   handleInputChange(event) {
-    // event.persist()
-    const e = event.target.value
-    if (this.props.authenticated) {
-      axios.get("http://127.0.0.1:5000/" + this.props.user + "/mandarin").then(
-      result => {
-        this.setState({
-          vocabulary: result.data, // yes! This works!
-          text: e, // vent.target.value,
-          known: result.data.length,
-          translation: this.translate(e).map((word, j) => {
-            if (result.data.includes(word.word)) {
-              return {...word, show: "hidden"}
-            } else {
-              return {...word, show: ""}
-            }
-          })
-        })
-      })
-    } else {
-      this.setState({
-        // vocabulary: result.data, // yes! This works!
-        text: e, // vent.target.value,
-        known: 0, // result.data.length,
-        translation: this.translate(e)
-      })
-    }
+    // axios.get("http://127.0.0.1:5000/{user_id}/{language}).then(
+    //  result => {
+    //    const vocabulary = result.data // what?  
+    // }
+    // )
+    // const translation = this.translate(event.target.value)
+    // translation = translation.map((word, j) => {
+    //   if (word.word in vocabulary) {
+    //     return {...word, show: "hidden"}
+    //   } else {
+    //     return {...word, show: ""}
+    //   }
+    // })
+
+    this.setState({
+      text: event.target.value,
+      translation: this.translate(event.target.value), // translation
+    })
   }
+
+
+  // import axios from 'axios';
+
+  // export default class MyComponent extends Component {
+  //   state = {
+  //     error: null,
+  //     isLoaded: false,
+  //     items: []
+  //   };
+
+  //   componentDidMount() {
+  //     axios.get("https://jsonplaceholder.typicode.com/users").then(
+  //       result => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           items: result.data // this will be ... 
+  //         });
+  //       },
+  //       // Note: it's important to handle errors here
+  //       // instead of a catch() block so that we don't swallow
+  //       // exceptions from actual bugs in components.
+  //       error => {
+  //         this.setState({
+  //           isLoaded: true,
+  //           error
+  //         });
+  //       }
+  //       );
+  //   }
+
+  //   render() {
+  //     const { error, isLoaded, items } = this.state;
+  //     if (error) {
+  //       return <div>Error: {error.message}</div>;
+  //     } else if (!isLoaded) {
+  //       return <div>Loading...</div>;
+  //     } else {
+  //       return (
+  //         <ul>
+  //           {items.map(item => (
+  //             <li key={item.username}>
+  //               {item.username}: {item.name}
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       );
+  //     }
+  //   }
+  // }
 
   toggle(ix) {
     const updated = this.state.translation.map((word, j) => {
@@ -98,26 +106,21 @@ class Translation extends React.Component {
         return word
       }
     })
-    const known = this.state.known + 1 * (updated[ix].show==="hidden") + -1 * (updated[ix].show!=="hidden")
+    
+    // and also post to the api to toggle in the database
+    // Fuck though -- how does it KNOW the user_id and language? Fuck.
+    // THAT MAY BE THE ONLY REMAINING PROBLEM THOUGH. 
+    // axios.post("http://127.0.0.1:5000/{user_id}/{language}/{word}); // ANYTHING ELSE?
+
+    const known = updated.map(word => word["show"]==="hidden").reduce((a, b) => a + b)
 
     this.setState({
       translation: updated,
-      known: known, 
-      unknown: updated.map(word => word["show"]!=="hidden").reduce((a, b) => a + b)
+      known: known,
+      unknown: updated.length - known
     })
-
-    if (this.props.authenticated) {
-      axios.post("http://127.0.0.1:5000/api/private/" + this.props.user + "/mandarin/" + this.state.translation[ix].word //,
-      // {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   }
-      // }
-      )
-    }
   }
 
-  // Shit -- this should be calling the database too at ... /language/word, to just get it? 
   translate(text) { 
     const translation = []
     let remaining_characters = text
@@ -134,10 +137,10 @@ class Translation extends React.Component {
                   const line = String(cedict[best_candidate])
                   const pinyin = (line.split(/](.+)/)[0]) + "]" // I only want to split on the FIRST ']'; 
                   const definition = (line.split(/](.+)/)[1]).slice(1) 
-                  translation.push({"word": best_candidate, "pinyin": pinyin, "definition": definition})
+                  translation.push({"token": best_candidate, "pinyin": pinyin, "definition": definition})
                 } else {
-                    const word = remaining_characters[0]
-                    translation.push({"word": word, "pinyin": "", "definition": ""})
+                    const token = remaining_characters[0]
+                    translation.push({"token": token, "pinyin": "", "definition": ""})
                 }
                 if (word_boundary > 1) {
                     remaining_characters = remaining_characters.slice(word_boundary-1)
@@ -151,7 +154,7 @@ class Translation extends React.Component {
     return(translation)
   }
 
-  render() {  
+  render() {
     return(
       <Container>
           
@@ -180,7 +183,7 @@ class Translation extends React.Component {
 
         {this.state.translation.map((word, ix) =>
           <Row key={ix} style={{textAlign: "left"}} onClick={() => this.toggle(ix)}>
-            <Col md={1}>{word["word"]}</Col>
+            <Col md={1}>{word["token"]}</Col>
             <Col md={2} className={word["show"]}>{word["pinyin"]}</Col>
             <Col md={8} className={word["show"]}>{word["definition"]}</Col>
           </Row>
@@ -192,6 +195,7 @@ class Translation extends React.Component {
 
 function About() {
   const [show, setShow] = useState(false);
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -228,104 +232,28 @@ function About() {
   );
 }
 
-const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
-
-  return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
-};
-
-const LogoutButton = () => {
-  const { logout } = useAuth0();
-
-  return (
-    <Button onClick={() => logout({ returnTo: window.location.origin })}>
-      Log Out
-    </Button>
-  );
-};
-
-const Profile = () => {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  // const [userMetadata, setUserMetadata] = useState(null);
-
-  if (isAuthenticated) {
-    return (<h4 style={{paddingTop:20+'px'}}>Welcome back, {user.name}!</h4>)
-  } else {
-    return (<h4 style={{paddingTop:20+'px'}}>Welcome! Log in, to keep track of your vocabulary!</h4>)
-  }
-};
-
-const App = () => {
-  
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
-  // const token = (async () => { await getAccessTokenSilently(); })();
-  // const [userMetadata, setUserMetadata] = useState(null);
-
-  useEffect(() => {
-    const getUserMetadata = async () => {
-      const domain = "ladderofbabel.com";
-  
-      try {
-        const accessToken = await getAccessTokenSilently({
-          audience: `http://${domain}/api/private`,
-          scope: "read:current_user",
-        });
-      } catch (e) {
-        console.log(e.message);
-      }
-    } 
-  })
-
+function App() {
   return (
     <div className="App">
       <Navbar bg="dark" className="" expand="lg">
-        <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white', fontsize:24+'pt'}}>Dovecote Institute</Nav.Link>
-        {!isAuthenticated && <LoginButton />}
-        {isAuthenticated && <LogoutButton />}
+      <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white', fontsize:24+'pt'}}>Dovecote Institute</Nav.Link>      
         <Nav className="mr-auto"></Nav> {/* Using this to push the rest to the right */}
-        &nbsp;
         <About />        
         <Navbar.Brand href="#home" style={{color:'white', paddingLeft:20+'px'}}>The Design Philosophy of Ladder of Babel</Navbar.Brand>        
       </Navbar>
 
-      <Profile />
-
-      <p></p>      
-      {/* <Translation authenticated={isAuthenticated} user={user.email} /> */}
-      {(!isAuthenticated && !isLoading) && <Translation authenticated={isAuthenticated} />}
-      {(isAuthenticated && !isLoading) && 
-        <Translation 
-          authenticated={isAuthenticated} 
-          user={user.email} />
-          // gettoken={accessToken} />
-      }
-
+      <p></p>
+      <Translation />
       <hr></hr>
       <footer style={{textAlign: "left"}} className="container">
         <p>&copy; Dovecote Institute 2020</p>
       </footer>
     </div>
+
   );
 }
 
-function Authenticator() {
-  return (
-    <Auth0Provider
-    domain="dev-lstkwpc9.us.auth0.com"
-    clientId="AK5e52F3h6Goesct1Q9ADvHuPchBW25U"
-    redirectUri={window.location.origin}
-    audience="http://ladderofbabel.com/api"
-    scope="read:current_user update:current_user_metadata"
-    >
-      <App />
-    </Auth0Provider>
-
-  )
-}
-
-// export default App;
-export default Authenticator;
-
+export default App;
 
 // “我有两张自拍，一张很丑，另一张还是很丑”（“在我的后园，可以看见墙外有两株树，一株是枣树，还有一株也是枣树。”——迅哥原文）
 // 100年前的鲁迅万万没有预料到，自己在当下的符号是“中文互联网梗王”、“金句界顶流”。
