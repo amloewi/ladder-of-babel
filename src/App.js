@@ -245,7 +245,7 @@ const LogoutButton = () => {
 };
 
 const Profile = () => {
-  const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated } = useAuth0();
   // const [userMetadata, setUserMetadata] = useState(null);
 
   if (isAuthenticated) {
@@ -257,24 +257,24 @@ const Profile = () => {
 
 const App = () => {
   
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   // const token = (async () => { await getAccessTokenSilently(); })();
   // const [userMetadata, setUserMetadata] = useState(null);
 
-  useEffect(() => {
-    const getUserMetadata = async () => {
-      const domain = "ladderofbabel.com";
+  // useEffect(() => {
+  //   const getUserMetadata = async () => {
+  //     const domain = "ladderofbabel.com";
   
-      try {
-        const accessToken = await getAccessTokenSilently({
-          audience: `http://${domain}/api/private`,
-          scope: "read:current_user",
-        });
-      } catch (e) {
-        console.log(e.message);
-      }
-    } 
-  })
+  //     try {
+  //       const accessToken = await getAccessTokenSilently({
+  //         audience: `http://${domain}/api/private`,
+  //         scope: "read:current_user",
+  //       });
+  //     } catch (e) {
+  //       console.log(e.message);
+  //     }
+  //   } 
+  // })
 
   return (
     <div className="App">
