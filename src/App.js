@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import { cedict } from "./medium.js"; // do one for medium w ... 50k
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // This was necessary; ugh
