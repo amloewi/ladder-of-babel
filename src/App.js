@@ -36,7 +36,7 @@ class Translation extends React.Component {
 
     if (this.props.authenticated) {
       // console.log("Set state YES authenticated")
-      axios.get("http://127.0.0.1:5000/" + this.props.user + "/mandarin").then(
+      axios.get("https://ladder-pipenv.herokuapp.com/api/private/" + this.props.user + "/mandarin").then(
         result => {
           // console.log("result.data:", result.data)
           const updated = translation.map((word) => {
@@ -65,7 +65,7 @@ class Translation extends React.Component {
     // event.persist()
     const e = event.target.value
     if (this.props.authenticated) {
-      axios.get("http://127.0.0.1:5000/" + this.props.user + "/mandarin").then(
+      axios.get("https://ladder-pipenv.herokuapp.com/api/private/" + this.props.user + "/mandarin").then(
       result => {
         this.setState({
           vocabulary: result.data, // yes! This works!
@@ -107,7 +107,9 @@ class Translation extends React.Component {
     })
 
     if (this.props.authenticated) {
-      axios.post("http://127.0.0.1:5000/api/private/" + this.props.user + "/mandarin/" + this.state.translation[ix].word //,
+      // https://ladder-pipenv.herokuapp.com/
+      // http://127.0.0.1:5000/api/private/
+      axios.post("https://ladder-pipenv.herokuapp.com/api/private/" + this.props.user + "/mandarin/" + this.state.translation[ix].word //,
       // {
       //   headers: {
       //     Authorization: `Bearer ${token}`,
