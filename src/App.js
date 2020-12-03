@@ -5,6 +5,8 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'; // This was neces
 import { Container, Row, Col, Navbar, Button, Nav, Modal, InputGroup, FormControl } from 'react-bootstrap';
 import axios from 'axios';
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
+// import bcrypt from 'bcryptjs';
+// import MD5 from 'crypto-js';
 
 // dev-lstkwpc9.us.auth0.com # DOMAIN
 // AK5e52F3h6Goesct1Q9ADvHuPchBW25U # CLIENT ID
@@ -208,7 +210,7 @@ function About() {
           <Modal.Title>About Ladder of Babel</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Ladder of Babel is a tool for beginner and intermediate students of Chinese that makes any (simplified) text accessible by solving a 
+          Ladder of Babel is a tool for beginner and intermediate students of Chinese that makes any text accessible by solving a 
           basic problem with most current tools.<p></p>
           Tools such as the Google Translate browser plugin, or the similar Mate Translate, are great for translating a single word at a time. They are 
            an enormous improvement over having to search through a paper dictionary. However, they are still designed for people who only need to look up
@@ -216,8 +218,9 @@ function About() {
           most Chinese language learners both need to translate <b>most</b> of the words - and, likely don't even know which combinations of characters 
            <b> form</b> a single word.<p></p>
            Ladder of Babel solves both of these problems by pre-identifying which characters go together, and giving definitions for everything, at once -- 
-           further allowing each user to customize and focus their learning, by hiding any information they don't need. 
-           This makes the reading experience as seamless and fluent as possible even for early stage students, and opens up the entire world of online Chinese
+           further allowing each user to customize and focus their learning, by hiding any information they don't need, and allowing them to watch as their
+           vocabulary grows.
+           This makes the reading experience as seamless and fluent as possible even for early stage students, and also opens up the entire world of online Chinese
            text for easy access, and productive study.
         </Modal.Body>
         <Modal.Footer>
@@ -230,11 +233,11 @@ function About() {
   );
 }
 
-const LoginButton = () => {
-  const { loginWithRedirect } = useAuth0();
+// const LoginButton = () => {
+//   const { loginWithRedirect } = useAuth0();
 
-  return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
-};
+//   return <Button onClick={() => loginWithRedirect()}>Log In</Button>;
+// };
 
 const LogoutButton = () => {
   const { logout } = useAuth0();
@@ -249,17 +252,32 @@ const LogoutButton = () => {
 const Profile = () => {
   const { user, isAuthenticated } = useAuth0();
   // const [userMetadata, setUserMetadata] = useState(null);
+  const { loginWithRedirect } = useAuth0();
 
   if (isAuthenticated) {
-    return (<h4 style={{paddingTop:20+'px'}}>Welcome back, {user.name}!</h4>)
+    return (<div></div>) // <h4 style={{paddingTop:20+'px'}}>Welcome back, {user.name}!</h4>)
   } else {
-    return (<h4 style={{paddingTop:20+'px'}}>Welcome! Log in, to keep track of your vocabulary!</h4>)
+    // return (<h4 className="welcome" >Welcome! Log in, to keep track of your vocabulary!</h4>)
+    return (<Button style={{marginTop:20+'px'}} onClick={() => loginWithRedirect()} >Welcome! Log in, to track your progress!</Button>)
   }
 };
 
 const App = () => {
   
   const { user, isAuthenticated, isLoading } = useAuth0();
+  
+  // WILL THIS PRODUCE A STABLE MAPPING???
+  // const encrypt = (input) => {
+  //   // const salt = bcrypt.genSaltSync(10);
+  //   return(bcrypt.hashSync(input, '7ohj Y$69t4 jb**x'));
+  // }
+  // let safer_id = null;
+  // if (isAuthenticated) {
+  //   const salt = bcrypt.genSaltSync(10);  
+  //   safer_id = bcrypt.hashSync(user.email, salt);
+  // }
+
+
   // const token = (async () => { await getAccessTokenSilently(); })();
   // const [userMetadata, setUserMetadata] = useState(null);
 
@@ -282,7 +300,7 @@ const App = () => {
     <div className="App">
       <Navbar bg="dark" className="" expand="lg">
         <Nav.Link href="http://dovecoteinstitute.org" style={{color:'white', fontsize:24+'pt'}}>Dovecote Institute</Nav.Link>
-        {!isAuthenticated && <LoginButton />}
+        {/* {!isAuthenticated && <LoginButton />} */}
         {isAuthenticated && <LogoutButton />}
         <Nav className="mr-auto"></Nav> {/* Using this to push the rest to the right */}
         &nbsp;
@@ -298,7 +316,7 @@ const App = () => {
       {(isAuthenticated && !isLoading) && 
         <Translation 
           authenticated={isAuthenticated} 
-          user={user.email} />
+          user={user.email} /> // user={encrypt(user.email)} /> //
           // gettoken={accessToken} />
       }
 

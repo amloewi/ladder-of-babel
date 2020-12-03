@@ -87,3 +87,9 @@
   text-align: right;
   z-index: -1;
 }
+
+.welcome {
+  padding-top: 20px;
+  font-weight: bold;
+  /* background-color:lightgrey; */
+}
