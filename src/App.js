@@ -250,7 +250,7 @@ const LogoutButton = () => {
 };
 
 const Profile = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { isAuthenticated } = useAuth0();
   // const [userMetadata, setUserMetadata] = useState(null);
   const { loginWithRedirect } = useAuth0();
 
