@@ -161,7 +161,7 @@ class Translation extends React.Component {
           
         <Row>
           <Col md={{span:3, offset:9}} className="fixed-top">
-            <Button variant="dark">Click to hide familiar words</Button>
+            <Button variant="dark">Click words you know to hide them!</Button>
             <br></br>
             <h5 style={{paddingTop:10+"px"}}>You knew {this.state.known} words,</h5>
             <h5>and saw {this.state.unknown} new ones!</h5>
@@ -258,7 +258,7 @@ const Profile = () => {
     return (<div></div>) // <h4 style={{paddingTop:20+'px'}}>Welcome back, {user.name}!</h4>)
   } else {
     // return (<h4 className="welcome" >Welcome! Log in, to keep track of your vocabulary!</h4>)
-    return (<Button style={{marginTop:20+'px'}} onClick={() => loginWithRedirect()} >Welcome! Log in, to track your progress!</Button>)
+    return (<Button style={{marginTop:20+'px'}} onClick={() => loginWithRedirect()} >Welcome! Log in, and the site will remember your vocabulary!</Button>)
   }
 };
 
