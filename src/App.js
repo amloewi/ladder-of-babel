@@ -249,6 +249,41 @@ const LogoutButton = () => {
   );
 };
 
+function FeedbackButton() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  return (
+    <>
+      <Button variant="primary" onClick={handleShow}>
+        Send Feedback
+      </Button>
+
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Feedback</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+          Thank you so much for using Ladder of Babel! We want to know your feedback, good and bad, and especially want to know
+          if anything went wrong. If you found a bug, please send an email to:
+          <br></br><br></br>
+          alex@dovecoteinstitute.org
+          <br></br><br></br>
+          Thanks!
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={handleClose}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  );
+}
+
 const Profile = () => {
   const { isAuthenticated } = useAuth0();
   // const [userMetadata, setUserMetadata] = useState(null);
@@ -303,6 +338,9 @@ const App = () => {
         {/* {!isAuthenticated && <LoginButton />} */}
         {isAuthenticated && <LogoutButton />}
         <Nav className="mr-auto"></Nav> {/* Using this to push the rest to the right */}
+        &nbsp;
+        <FeedbackButton />
+        &nbsp;
         &nbsp;
         <About />        
         <Navbar.Brand href="#home" style={{color:'white', paddingLeft:20+'px'}}>The Design Philosophy of Ladder of Babel</Navbar.Brand>        
