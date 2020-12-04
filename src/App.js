@@ -8,6 +8,20 @@ import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 // import bcrypt from 'bcryptjs';
 // import MD5 from 'crypto-js';
 
+
+import ReactGA from 'react-ga';
+// import auth from './auth.ts'; // Sample authentication provider
+
+// // "measurement id": G-D6QWX1DVPK
+// // 
+// const trackingId = "UA-1234567890-1"; // Replace with your Google Analytics tracking ID
+// ReactGA.initialize(trackingId);
+// ReactGA.set({
+//   userId: auth.currentUserId(),
+//   // any data that is relevant to the user session
+//   // that you would like to track with google analytics
+// })
+
 // dev-lstkwpc9.us.auth0.com # DOMAIN
 // AK5e52F3h6Goesct1Q9ADvHuPchBW25U # CLIENT ID
 
@@ -367,17 +381,19 @@ const App = () => {
 }
 
 function Authenticator() {
+  ReactGA.initialize('G-D6QWX1DVPK');
   return (
-    <Auth0Provider
-    domain="dev-lstkwpc9.us.auth0.com"
-    clientId="AK5e52F3h6Goesct1Q9ADvHuPchBW25U"
-    redirectUri={window.location.origin}
-    audience="http://ladderofbabel.com/api"
-    scope="read:current_user update:current_user_metadata"
-    >
-      <App />
-    </Auth0Provider>
-
+    <div>
+      <Auth0Provider
+      domain="dev-lstkwpc9.us.auth0.com"
+      clientId="AK5e52F3h6Goesct1Q9ADvHuPchBW25U"
+      redirectUri={window.location.origin}
+      audience="http://ladderofbabel.com/api"
+      scope="read:current_user update:current_user_metadata"
+      >         
+        <App />
+      </Auth0Provider>
+    </div>
   )
 }
 
